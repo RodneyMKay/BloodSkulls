@@ -1,0 +1,6 @@
+name: BloodSkulls
+version: @version@
+main: de.redgames.bloodskulls.BloodSkullsPlugin
+api-version: 1.13
+authors: [Rodney_Mc_Kay]
+description: Stackable custom mob skulls and player head drops (+ Craftbook integration)
