@@ -1,7 +1,5 @@
 package de.redgames.bloodskulls.config;
 
-import gg.mt.minecord.api.util.TypeSpec;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
