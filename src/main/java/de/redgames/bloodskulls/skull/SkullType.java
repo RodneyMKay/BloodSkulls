@@ -2,7 +2,7 @@ package de.redgames.bloodskulls.skull;
 
 import de.redgames.bloodskulls.util.LanguageUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
 import org.json.simple.JSONObject;
 
 import java.util.Base64;

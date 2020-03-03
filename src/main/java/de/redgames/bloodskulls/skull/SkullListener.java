@@ -11,70 +11,79 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class SkullListener implements Listener {
+
+    private SkullConfiguration skullConfiguration;
+
+    public SkullListener(SkullConfiguration Configuration) {
+        this.skullConfiguration = Configuration;
+    }
+
     @EventHandler
     public void onItemSpawn(ItemSpawnEvent event) {
         ItemStack fixedItem = Skulls.getFixedItem(event.getEntity().getItemStack());
-        if(fixedItem != null) event.getEntity().setItemStack(fixedItem);
+        if (fixedItem != null) event.getEntity().setItemStack(fixedItem);
     }
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         // Filter event
-        if(SkullConfiguration.playerKillsOnly && event.getEntity().getKiller() == null) return;
-        if(event.getEntityType() == null) return;
-        if(event.getEntity().getKiller() != null && !event.getEntity().getKiller().hasPermission("craftbook.mech.headdrops.kill")) return;
+        if (skullConfiguration.playerKillsOnly && event.getEntity().getKiller() == null) return;
+
+        if(skullConfiguration.needPermission) {
+            if (event.getEntity().getKiller() != null && (!event.getEntity().getKiller().hasPermission("bloodskulls.drop"))) return;
+        }
 
         // Check if SkullType is customized
         SkullType skullType = SkullType.getSkullTypeByEntityType(event.getEntityType());
-        if(skullType == null) return;
+        if (skullType == null) return;
 
         // Calculate drop chance
-        double chance = Math.min(1, SkullConfiguration.dropRate);
-        if(SkullConfiguration.customDropRates.containsKey(skullType.name()))
-            chance = Math.min(1, SkullConfiguration.customDropRates.get(skullType.name()));
+        double chance = Math.min(1, skullConfiguration.dropRate);
+        if (skullConfiguration.customDropRates.containsKey(skullType.name()))
+            chance = Math.min(1, skullConfiguration.customDropRates.get(skullType.name()));
         ItemStack item = event.getEntity().getKiller().getItemInHand();
-        if(event.getEntity().getKiller() != null && item != null && item.containsEnchantment(Enchantment.LOOT_BONUS_MOBS))
-            chance = Math.min(1, chance + SkullConfiguration.rateModifier * item.getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS));
-        if(BloodSkullsPlugin.random.nextDouble() > chance)
+        if (event.getEntity().getKiller() != null && item.containsEnchantment(Enchantment.LOOT_BONUS_MOBS))
+            chance = Math.min(1, chance + skullConfiguration.rateModifier * item.getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS));
+        if (BloodSkullsPlugin.random.nextDouble() > chance)
             return;
 
         // Drop skull
         ItemStack toDrop;
-        switch(event.getEntityType()) {
+        switch (event.getEntityType()) {
             case PLAYER:
-                if(!SkullConfiguration.enablePlayers) return;
+                if (!skullConfiguration.enablePlayers) return;
                 String playername = event.getEntity().getName();
-                if(SkullConfiguration.ignoredNames.contains(playername)) return;
+                if (skullConfiguration.ignoredNames.contains(playername)) return;
                 toDrop = Skulls.getSkullItemPlayer((Player) event.getEntity(), playername, 1);
                 break;
 
             case ZOMBIE:
-                if(!SkullConfiguration.enableMobs) return;
+                if (!skullConfiguration.enableMobs) return;
                 toDrop = new ItemStack(Material.ZOMBIE_HEAD, 1);
                 break;
 
             case CREEPER:
-                if(!SkullConfiguration.enableMobs) return;
+                if (!skullConfiguration.enableMobs) return;
                 toDrop = new ItemStack(Material.CREEPER_HEAD, 1);
                 break;
 
             case SKELETON:
-                if(!SkullConfiguration.enableMobs) return;
+                if (!skullConfiguration.enableMobs) return;
                 toDrop = new ItemStack(Material.SKELETON_SKULL, 1);
                 break;
 
             case WITHER_SKELETON:
-                if (!SkullConfiguration.enableMobs || !SkullConfiguration.overrideNatural) return;
+                if (!skullConfiguration.enableMobs || !skullConfiguration.overrideNatural) return;
                 toDrop = new ItemStack(Material.WITHER_SKELETON_SKULL, 1);
                 break;
 
             case ENDER_DRAGON:
-                if(!SkullConfiguration.enableMobs) return;
+                if (!skullConfiguration.enableMobs) return;
                 toDrop = new ItemStack(Material.DRAGON_HEAD, 1);
                 break;
 
             default:
-                if(!SkullConfiguration.enableMobs) return;
+                if (!skullConfiguration.enableMobs) return;
                 toDrop = Skulls.getSkullItemMob(skullType, 1);
                 break;
         }
