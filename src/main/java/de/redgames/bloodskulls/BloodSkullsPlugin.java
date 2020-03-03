@@ -17,7 +17,6 @@ public final class BloodSkullsPlugin extends JavaPlugin {
     public static Logger logger;
     public static Random random;
 
-    private Config config;
     private SkullConfiguration skullConfiguration;
 
     @Override
@@ -26,7 +25,7 @@ public final class BloodSkullsPlugin extends JavaPlugin {
         random = new Random();
         skullConfiguration = new SkullConfiguration();
         try {
-            config = BukkitConfig.load(getDataFolder().toPath().resolve("config.yml"));
+            Config config = BukkitConfig.load(getDataFolder().toPath().resolve("config.yml"));
             config.process(skullConfiguration);
             config.save();
         } catch (ConfigException e) {

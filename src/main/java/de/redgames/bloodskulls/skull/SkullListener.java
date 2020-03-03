@@ -30,7 +30,7 @@ public class SkullListener implements Listener {
         if (skullConfiguration.playerKillsOnly && event.getEntity().getKiller() == null) return;
 
         if(skullConfiguration.needPermission) {
-            if (event.getEntity().getKiller() != null && (!event.getEntity().getKiller().hasPermission("bloodskulls.drop"))) return;
+            if (event.getEntity().getKiller() != null && !event.getEntity().getKiller().hasPermission("bloodskulls.drop")) return;
         }
 
         // Check if SkullType is customized
@@ -41,11 +41,14 @@ public class SkullListener implements Listener {
         double chance = Math.min(1, skullConfiguration.dropRate);
         if (skullConfiguration.customDropRates.containsKey(skullType.name()))
             chance = Math.min(1, skullConfiguration.customDropRates.get(skullType.name()));
-        ItemStack item = event.getEntity().getKiller().getItemInHand();
-        if (event.getEntity().getKiller() != null && item.containsEnchantment(Enchantment.LOOT_BONUS_MOBS))
-            chance = Math.min(1, chance + skullConfiguration.rateModifier * item.getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS));
-        if (BloodSkullsPlugin.random.nextDouble() > chance)
-            return;
+        if (event.getEntity().getKiller() != null) {
+            ItemStack item = event.getEntity().getKiller().getItemInHand();
+            if (item.containsEnchantment(Enchantment.LOOT_BONUS_MOBS)) {
+                chance = Math.min(1, chance + skullConfiguration.rateModifier * item.getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS));
+            }
+        }
+
+        if (BloodSkullsPlugin.random.nextDouble() > chance) return;
 
         // Drop skull
         ItemStack toDrop;

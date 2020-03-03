@@ -16,9 +16,11 @@ public final class Skulls {
     public static ItemStack getSkullItemMob(SkullType skullType, int amount) {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, amount);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-        skullMeta.setDisplayName(skullType.getDisplayName());
-        SkullMetaUtil.addValue(skullMeta, skullType.getTextureValue(), skullType.getUUID(), skullType.getName());
-        itemStack.setItemMeta(skullMeta);
+        if (skullMeta != null) {
+            skullMeta.setDisplayName(skullType.getDisplayName());
+            SkullMetaUtil.addValue(skullMeta, skullType.getTextureValue(), skullType.getUUID(), skullType.getName());
+            itemStack.setItemMeta(skullMeta);
+        }
         return itemStack;
     }
 
@@ -35,27 +37,31 @@ public final class Skulls {
         // Prepare data
         if (itemStack.getType() != Material.PLAYER_HEAD) return null;
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-        if (skullMeta.getOwningPlayer() == null) return null;
-        String playername = skullMeta.getOwner();
-        UUID uuid = skullMeta.getOwningPlayer().getUniqueId();
-        SkullType skullType;
+        if (skullMeta != null) {
+            if (skullMeta.getOwningPlayer() == null) return null;
+            String playername = skullMeta.getOwner();
+            UUID uuid = skullMeta.getOwningPlayer().getUniqueId();
 
-        // Craftbook fix
-        if (playername != null) {
-            skullType = SkullType.getSkullTypeByCraftbookName(playername);
-            if (skullType != null) {
-                return getSkullItemMob(skullType, itemStack.getAmount());
+
+            SkullType skullType;
+
+            // Craftbook fix
+            if (playername != null) {
+                skullType = SkullType.getSkullTypeByCraftbookName(playername);
+                if (skullType != null) {
+                    return getSkullItemMob(skullType, itemStack.getAmount());
+                }
             }
-        }
 
-        // Displayname fix
-        skullType = SkullType.getSkullTypeByUUID(uuid.toString());
-        if (skullType != null) {
-            String displayName = skullMeta.getDisplayName() + "";
-            if (!displayName.equals(skullType.getDisplayName() + "")) {
-                skullMeta.setDisplayName(skullType.getDisplayName());
-                itemStack.setItemMeta(skullMeta);
-                return itemStack;
+            // Displayname fix
+            skullType = SkullType.getSkullTypeByUUID(uuid.toString());
+            if (skullType != null) {
+                String displayName = skullMeta.getDisplayName() + "";
+                if (!displayName.equals(skullType.getDisplayName() + "")) {
+                    skullMeta.setDisplayName(skullType.getDisplayName());
+                    itemStack.setItemMeta(skullMeta);
+                    return itemStack;
+                }
             }
         }
 
