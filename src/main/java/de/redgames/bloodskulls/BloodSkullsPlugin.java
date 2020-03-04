@@ -30,7 +30,6 @@ public final class BloodSkullsPlugin extends JavaPlugin {
             config.save();
         } catch (ConfigException e) {
             logger.log(Level.SEVERE, "Error reading config!", e);
-            e.printStackTrace();
         }
 
         try {
@@ -38,7 +37,7 @@ public final class BloodSkullsPlugin extends JavaPlugin {
             CraftbookHooker.hook();
             logger.info("Successfully hooked into CraftBook.");
         } catch (Exception e) {
-            logger.warning("Craftbook not found! Continuing with own integration ...");
+            logger.info("Craftbook not found! Continuing with own integration ...");
         }
 
         logger.info("Plugin loaded!");
