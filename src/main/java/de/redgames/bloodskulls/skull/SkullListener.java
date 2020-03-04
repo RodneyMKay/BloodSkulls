@@ -37,17 +37,24 @@ public class SkullListener implements Listener {
         SkullType skullType = SkullType.getSkullTypeByEntityType(event.getEntityType());
         if (skullType == null) return;
 
-        // Calculate drop chance
-        double chance = Math.min(1, skullConfiguration.dropRate);
-        if (skullConfiguration.customDropRates.containsKey(skullType.name()))
-            chance = Math.min(1, skullConfiguration.customDropRates.get(skullType.name()));
+        //Add DropRate to chance
+        double chance;
+        if (skullConfiguration.customDropRates.containsKey(skullType.name())) {
+            chance = skullConfiguration.customDropRates.get(skullType.name());
+        } else {
+            chance = skullConfiguration.dropRate;
+        }
+
+        //Check for Looting
         if (event.getEntity().getKiller() != null) {
             ItemStack item = event.getEntity().getKiller().getItemInHand();
             if (item.containsEnchantment(Enchantment.LOOT_BONUS_MOBS)) {
-                chance = Math.min(1, chance + skullConfiguration.rateModifier * item.getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS));
+                //Add Looting bonus to drop chance
+                chance = skullConfiguration.rateModifier * item.getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS);
             }
         }
 
+        // Calculate if Skull should drop
         if (BloodSkullsPlugin.random.nextDouble() > chance) return;
 
         // Drop skull
