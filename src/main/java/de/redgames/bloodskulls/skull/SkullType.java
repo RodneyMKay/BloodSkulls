@@ -75,6 +75,7 @@ public enum SkullType {
     RAVAGER("cd20bf52ec390a0799299184fc678bf84cf732bb1bd78fd1c4b441858f0235a8", "87c17772-d769-4732-a066-d3c3be3ada57"),
     // Own skulls | 1.15
     BEE("59ac16f296b461d05ea0785d477033e527358b4f30c266aa02f020157ffca736", "fb5f97f4-23b9-4a2a-8e86-5fa9a3dd07b0"),
+    PANDA("7818b681cace1c641919f53edadecb142330d089a826b56219138c33b7a5e0db", "4b1e9b4d-17d2-48eb-882f-9c4ee0f44c00"),
 
     // Player skull
     PLAYER("00000052-6f64-6e65-7957-617348657265"),
