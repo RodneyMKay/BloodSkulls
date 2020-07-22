@@ -76,7 +76,12 @@ public enum SkullType {
     // Own skulls | 1.15
     BEE("59ac16f296b461d05ea0785d477033e527358b4f30c266aa02f020157ffca736", "fb5f97f4-23b9-4a2a-8e86-5fa9a3dd07b0"),
     PANDA("7818b681cace1c641919f53edadecb142330d089a826b56219138c33b7a5e0db", "4b1e9b4d-17d2-48eb-882f-9c4ee0f44c00"),
-
+    // Own skulls | 1.16
+    HOGLIN("9bb9bc0f01dbd762a08d9e77c08069ed7c95364aa30ca1072208561b730e8d75", "431d4721-017d-4d11-8b83-6a46952645c6"),
+    PIGLIN("cced9d801aa6f83f8e49f90d9a8b85b7f8fda583d85f72cffb6986725789f636","6f8ba928-047d-40eb-b9b9-bf88af82739f"),
+    STRIDER("18a9adf780ec7dd4625c9c0779052e6a15a451866623511e4c82e9655714b3c1","d90756f2-d596-4b3a-ad7c-7e677396d707"),
+    ZOGLIN("e67e18602e03035ad68967ce090235d8996663fb9ea47578d3a7ebbc42a5ccf9","929601dc-ec6c-492c-b7de-22d9282388dc"),
+    ZOMBIFIED_PIGLIN("7eabaecc5fae5a8a49c8863ff4831aaa284198f1a2398890c765e0a8de18da8c","e55455e2-f5f5-403d-bf26-8983f143eb70"),
     // Player skull
     PLAYER("00000052-6f64-6e65-7957-617348657265"),
     ZOMBIE(),
@@ -85,8 +90,8 @@ public enum SkullType {
     ENDER_DRAGON(),
     WITHER_SKELETON();
 
-    private static HashMap<String, SkullType> craftbookNameMap = new HashMap<>();
-    private static HashMap<String, SkullType> uuidMap = new HashMap<>();
+    private static final HashMap<String, SkullType> craftbookNameMap = new HashMap<>();
+    private static final HashMap<String, SkullType> uuidMap = new HashMap<>();
     private static final String TEXTURE_URL = "http://textures.minecraft.net/texture/";
 
     private String defaultTexture;
