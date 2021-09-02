@@ -1,8 +1,8 @@
 package de.redgames.bloodskulls.util;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.properties.PropertyMap;
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.UUID;
@@ -12,11 +12,9 @@ public final class SkullMetaUtil {
     private SkullMetaUtil() {}
 
     public static SkullMeta addValue(SkullMeta skullMeta, String value, UUID uuid, String playername) {
-        GameProfile gameProfile = new GameProfile(uuid, playername);
-        PropertyMap propertyMap = gameProfile.getProperties();
-        propertyMap.clear();
-        propertyMap.put("textures", new Property("textures", value));
-        ReflectionUtil.setValue(skullMeta, "profile", gameProfile);
+        PlayerProfile profile = Bukkit.createProfile(uuid, playername);
+        profile.getProperties().add(new ProfileProperty("textures", value));
+        skullMeta.setPlayerProfile(profile);
         return skullMeta;
     }
 }

@@ -1,30 +1,31 @@
-apply plugin: 'java'
+plugins {
+    id 'java'
+}
 
 group = pluginGroup
 version = pluginVersion
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+java {
+    sourceCompatibility JavaVersion.VERSION_16
+    targetCompatibility JavaVersion.VERSION_16
+}
 
 repositories {
     mavenCentral()
-    maven {
-        name = 'spigotmc-repo'
-        url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
-    }
-    mavenLocal()
+    maven { url "https://papermc.io/repo/repository/maven-public/" }
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'org.bukkit:bukkit:1.14.1-R0.1-SNAPSHOT'
-    compile 'org.bukkit:craftbukkit:1.13.2-R0.1-SNAPSHOT'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly "io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT"
+    compileOnly "io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT"
+    compileOnly fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
+    duplicatesStrategy DuplicatesStrategy.INCLUDE
+
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
