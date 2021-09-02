@@ -1,7 +1,8 @@
 package de.redgames.bloodskulls.skull;
 
-import net.kyori.adventure.translation.GlobalTranslator;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.EntityType;
 import org.json.simple.JSONObject;
 
@@ -81,6 +82,10 @@ public enum SkullType {
     STRIDER(EntityType.STRIDER, "18a9adf780ec7dd4625c9c0779052e6a15a451866623511e4c82e9655714b3c1","d90756f2-d596-4b3a-ad7c-7e677396d707"),
     ZOGLIN(EntityType.ZOGLIN, "e67e18602e03035ad68967ce090235d8996663fb9ea47578d3a7ebbc42a5ccf9","929601dc-ec6c-492c-b7de-22d9282388dc"),
     ZOMBIFIED_PIGLIN(EntityType.ZOMBIFIED_PIGLIN, "7eabaecc5fae5a8a49c8863ff4831aaa284198f1a2398890c765e0a8de18da8c","e55455e2-f5f5-403d-bf26-8983f143eb70", "MHF_PigZombie", "ManBearPigZombie", "scraftbrothers5"),
+    // Own skulls | 1.17
+    AXOLOTL(EntityType.AXOLOTL, "7b910fbc216f724d29655155b2a3858a80f234a0cfed609e22fc670683ab777a", "69a15a63-fabd-463d-a8b2-f93d18bce74f"),
+    GOAT(EntityType.GOAT, "457a0d538fa08a7affe312903468861720f9fa34e86d44b89dcec5639265f03", "e59e7c5a-1e02-417b-b46d-3a520420f99b"),
+    GLOW_SQUID(EntityType.GLOW_SQUID, "55e2b46e52ac92d419a2ddbcc9cdce7b451cb48ae739d85d607db0502a008ce0", "87e49408-d9ad-46e5-8058-db2138f73306"),
     // Player skull
     PLAYER(EntityType.PLAYER, "00000052-6f64-6e65-7957-617348657265"),
     ZOMBIE(EntityType.ZOMBIE),
@@ -139,13 +144,13 @@ public enum SkullType {
         return UUID.fromString(uuid);
     }
 
-    public String getName() {
-        return Objects.requireNonNull(GlobalTranslator.get().translate(type.translationKey(), Locale.ENGLISH)).format("");
-    }
-
-    public String getDisplayName() {
-        if (this == SkullType.PLAYER) return null;
-        return ChatColor.YELLOW + getName() + " Head";
+    public Component getDisplayName() {
+        return Component.text()
+                .color(NamedTextColor.YELLOW)
+                .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)
+                .append(Component.translatable(type.translationKey()))
+                .append(Component.text(" Head"))
+                .build();
     }
 
     private static final Map<EntityType, SkullType> byEntityType = Arrays.stream(values())

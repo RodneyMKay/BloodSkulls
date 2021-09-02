@@ -2,6 +2,7 @@ package de.redgames.bloodskulls.skull;
 
 import de.redgames.bloodskulls.util.GameProfileUtil;
 import de.redgames.bloodskulls.util.SkullMetaUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +18,8 @@ public final class Skulls {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, amount);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
         if (skullMeta != null) {
-            skullMeta.setDisplayName(skullType.getDisplayName());
-            SkullMetaUtil.addValue(skullMeta, skullType.getTextureValue(), skullType.getUUID(), skullType.getName());
+            skullMeta.displayName(skullType.getDisplayName());
+            SkullMetaUtil.addValue(skullMeta, skullType.getTextureValue(), skullType.getUUID(), skullType.name());
             itemStack.setItemMeta(skullMeta);
         }
         return itemStack;
@@ -56,9 +57,9 @@ public final class Skulls {
             // Displayname fix
             skullType = SkullType.getSkullTypeByUUID(uuid.toString());
             if (skullType != null) {
-                String displayName = skullMeta.getDisplayName() + "";
-                if (!displayName.equals(skullType.getDisplayName() + "")) {
-                    skullMeta.setDisplayName(skullType.getDisplayName());
+                Component displayName = skullMeta.displayName();
+                if (!skullType.getDisplayName().equals(displayName)) {
+                    skullMeta.displayName(skullType.getDisplayName());
                     itemStack.setItemMeta(skullMeta);
                     return itemStack;
                 }
